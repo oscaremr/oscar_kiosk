@@ -1,0 +1,39 @@
+<!-- Note that this is not a self standing ant build file. This file is only meant to be called from maven. -->
+<project default="copy_jsps">
+	<property name="webapps.dir" value="catalina_base/webapps" />
+	<property name="context.dir" value="${webapps.dir}/oscar_apps" />
+
+	<target name="copy_jsps">
+		<echo message="Copying jsps" />
+
+		<copy todir="${context.dir}">
+			<fileset dir="src/main/webapp" />
+		</copy>
+	</target>
+
+	<target name="build_catalina_base">
+		<copy todir="${context.dir}">
+			<fileset dir="target/oscar_apps-0.0-SNAPSHOT" />
+		</copy>
+	</target>
+
+	<!-- this task updates a properties file after a compile but before a package -->
+	<target name="set_build_time">
+		<tstamp>
+			<format property="build.dateTime" pattern="yyyy-MM-dd hh:mm aa" />
+		</tstamp>
+		
+		<echo message="build time : ${build.dateTime}" />
+		
+		<replace file="target/classes/config.properties" token="${ant.build.dateTime}" value="${build.dateTime}" />
+	</target>
+
+	<target name="clean_catalina_base">
+		<delete dir="${context.dir}" />
+		<delete includeemptydirs="true" quiet="true">
+			<fileset dir="catalina_base/logs" excludes=".gitignore" />
+			<fileset dir="catalina_base/work" excludes=".gitignore" />
+		</delete>
+	</target>
+
+</project>

@@ -1,0 +1,1 @@
+<%response.sendRedirect("card_reader.jsp");%>
