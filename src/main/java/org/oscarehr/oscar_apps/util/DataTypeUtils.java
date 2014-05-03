@@ -1,9 +1,12 @@
 package org.oscarehr.oscar_apps.util;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
@@ -250,6 +253,66 @@ public final class DataTypeUtils
 		// A Ambiguous
 		// N Not applicable
 		if (gender != null) pid.getAdministrativeSex().setValue(gender.toString());
+	}
+
+	/**
+	 * @param pid
+	 * @param pidNumber pass in the # of this pid for the sequence, i.e. normally it's 1 if you only have 1 pid entry. if this is a list of pids, then the first one is 1, second is 2 etc..
+	 * @param healthNumberProvince use the 2 digit province code
+	 * @throws HL7Exception
+	 * @throws ParseException 
+	 */
+	public static void fillPidForA08(PID pid, HttpServletRequest request) throws HL7Exception, ParseException
+	{
+		// defined as first pid=1 second pid=2 etc
+		pid.getSetIDPID().setValue(request.getParameter("demoNo"));
+
+		CX cx = pid.getPatientIdentifierList(0);
+		// health card string, excluding version code
+		cx.getIDNumber().setValue(request.getParameter("hin"));
+		cx.getIdentifierTypeCode().setValue(HEALTH_NUMBER);
+		// blank for everyone but ontario use version code
+		if (request.getParameter("ver") != null) cx.getIdentifierCheckDigit().setValue(request.getParameter("ver"));
+		// province
+		cx.getAssigningJurisdiction().getIdentifier().setValue(request.getParameter("province"));
+
+		setDate(cx.getEffectiveDate(), Integer.parseInt(request.getParameter("effYear"))
+				, Integer.parseInt(request.getParameter("effMonth")), Integer.parseInt(request.getParameter("effDay")));
+		setDate(cx.getExpirationDate(), Integer.parseInt(request.getParameter("expiryYear")), Integer.parseInt(request.getParameter("expiryMonth")), null);
+
+		XPN xpn = pid.getPatientName(0);
+		xpn.getFamilyName().getSurname().setValue(request.getParameter("last_name"));
+		xpn.getGivenName().setValue(request.getParameter("first_name"));
+		// Value Description
+		// -----------------
+		// A Alias Name
+		// B Name at Birth
+		// C Adopted Name
+		// D Display Name
+		// I Licensing Name
+		// L Legal Name
+		// M Maiden Name
+		// N Nickname /Call me Name/Street Name
+		// P Name of Partner/Spouse - obsolete (DO NOT USE)
+		// R Registered Name (animals only)
+		// S Coded Pseudo-Name to ensure anonymity
+		// T Indigenous/Tribal/Community Name
+		// U Unspecified
+		xpn.getNameTypeCode().setValue("L");
+		
+		Date dob = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dob"));
+
+		setDate(pid.getDateTimeOfBirth() , dob.getYear() + 1900, dob.getMonth() - 1, dob.getDate());
+
+		// Value Description
+		// -----------------
+		// F Female
+		// M Male
+		// O Other
+		// U Unknown
+		// A Ambiguous
+		// N Not applicable
+		if (request.getParameter("sex") != null) pid.getAdministrativeSex().setValue(request.getParameter("sex"));
 	}
 
 	/**

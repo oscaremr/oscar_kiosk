@@ -21,12 +21,15 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import net.sf.json.JSONObject;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import ca.uhn.hl7v2.HL7Exception;
@@ -38,17 +41,17 @@ public final class SendingUtils
 	private static final Logger logger = MiscUtils.getLogger();
 	private static final Integer CONNECTION_TIME_OUT = 10000;
 
-	public static int send(AbstractMessage message, String url, String publicOscarKeyString, String publicServiceKeyString, String serviceName) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException, HL7Exception
+	public static JSONObject send(AbstractMessage message, String url, String publicOscarKeyString, String publicServiceKeyString, String serviceName) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException, HL7Exception
 	{
 		PrivateKey publicServiceKey = getPublicServiceKey(publicServiceKeyString);
 		PublicKey publicOscarKey = getPublicOscarKey(publicOscarKeyString);
 
 		byte[] dataBytes = OscarToOscarUtils.pipeParser.encode(message).getBytes();
 
-		return(send(dataBytes, url, publicOscarKey, publicServiceKey, serviceName));
+		return (send(dataBytes, url, publicOscarKey, publicServiceKey, serviceName));
 	}
 
-	public static int send(byte[] dataBytes, String url, PublicKey receiverOscarKey, PrivateKey publicServiceKey, String serviceName) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException
+	public static JSONObject send(byte[] dataBytes, String url, PublicKey receiverOscarKey, PrivateKey publicServiceKey, String serviceName) throws InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException
 	{
 		byte[] signature = getSignature(dataBytes, publicServiceKey);
 		SecretKey senderSecretKey = createSecretKey();
@@ -60,7 +63,7 @@ public final class SendingUtils
 		return(postData(url, encryptedBytes, encryptedSecretKey, signature, serviceName));
 	}
 
-	private static int postData(String url, byte[] encryptedBytes, byte[] encryptedSecretKey, byte[] signature, String serviceName) throws IOException
+	private static JSONObject postData(String url, byte[] encryptedBytes, byte[] encryptedSecretKey, byte[] signature, String serviceName) throws IOException
 	{
 		MultipartEntity multipartEntity = new MultipartEntity();
 
@@ -78,8 +81,11 @@ public final class SendingUtils
 		httpClient.getParams().setParameter("http.connection.timeout", CONNECTION_TIME_OUT);
 		HttpResponse httpResponse = httpClient.execute(httpPost);
 		int statusCode = httpResponse.getStatusLine().getStatusCode();
-		logger.debug("StatusCode:" + statusCode);
-		return(statusCode);
+		JSONObject result = new JSONObject();
+		result.put("statusCode", statusCode);
+		result.put("body", JSONObject.fromObject(EntityUtils.toString(httpResponse.getEntity())));
+		logger.debug("result: " + result.toString());
+		return result;
 	}
 
 	private static byte[] encryptEncryptionKey(SecretKey senderSecretKey, PublicKey receiverOscarKey) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException

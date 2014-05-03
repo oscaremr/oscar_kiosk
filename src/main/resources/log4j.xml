@@ -51,7 +51,7 @@
 	<!-- ############################# -->
 
 	<category name="org.oscarehr.oscar_apps">
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 	</category>
 
 	<category name="org.oscarehr.oscar_apps.util.VmStat" additivity="false">
@@ -67,7 +67,7 @@
 	<!-- ############################# -->
 
 	<root>
-		<priority value="INFO" />
+		<priority value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 

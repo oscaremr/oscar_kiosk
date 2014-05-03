@@ -9,7 +9,9 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -46,50 +48,70 @@ public class CardReaderAction
 	 * would tell the client to go see a receptionist so we don't really need
 	 * to know why it failed.
 	 */
-	public static boolean processCardData(String magneticCardData)
+	public static JSONObject processCardData(String magneticCardData) 
 	{
 		magneticCardData = StringUtils.trimToNull(magneticCardData);
 
-		if (magneticCardData == null)
+		JSONObject ret = null;
+		if (magneticCardData == null) 
 		{
 			logger.debug("magneticCardData was blank / null");
-			return(false);
+			ret = new JSONObject();
+			ret.put("statusCode", 400);
+			return ret; // bad request
 		}
 
-		try
+		try 
 		{
-			MagneticParser parser = ParserManager.getParser(magneticCardData);
+			MagneticParser parser = null;
+			try 
+			{
+				parser = ParserManager.getParser(magneticCardData);
+			} 
+			catch (IllegalArgumentException e) 
+			{
+				ret = new JSONObject();
+				ret.put("statusCode", 404);
+				return ret;
+			}
 
-			if (parser instanceof HealthCardMagneticParser)
+			if (parser instanceof HealthCardMagneticParser) 
 			{
-				return(sendHealthCardInfo((HealthCardMagneticParser)parser));
-			}
-			else if (parser instanceof McMasterStudentCardParser)
+				return (sendHealthCardInfo((HealthCardMagneticParser) parser));
+			} 
+			else if (parser instanceof McMasterStudentCardParser) 
 			{
-				return(sendChartNo((McMasterStudentCardParser)parser));
-			}
-			else
+				return (sendChartNo((McMasterStudentCardParser) parser));
+			} 
+			else 
 			{
-				throw(new IllegalStateException("Ummm I've misseed a case. class=" + parser.getClass().getName()));
+				//throw (new IllegalStateException(
+				//		"Ummm I've misseed a case. class="
+				//				+ parser.getClass().getName()));
+				ret = new JSONObject();
+				ret.put("statusCode", 404);
+				return ret;
 			}
-		}
-		catch (Exception e)
+		} 
+		catch (Exception e) 
 		{
 			logger.debug("connection problem ", e);
-			return(false);
+			ret = new JSONObject();
+			ret.put("statusCode", 400);
+			return ret;
 		}
 	}
 
-	private static boolean sendChartNo(McMasterStudentCardParser parser) throws HL7Exception, InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException
+	private static JSONObject sendChartNo(McMasterStudentCardParser parser) throws HL7Exception, InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, IOException
 	{
 		ADT_A09 hl7Message = AdtA10.makeAdtA10(SENDER, PATIENT_TYPE, ROOM, parser.getStudentId());
 		logger.debug("msg " + hl7Message + " url " + url + " oscarkey " + oscarKeyBase64 + " serv " + serviceKeyBase64 + " servNAme " + serviceName);
-		int statusCode = SendingUtils.send(hl7Message, url, oscarKeyBase64, serviceKeyBase64, serviceName);
-		logger.debug("statusCode" + statusCode);
-		return(HttpServletResponse.SC_OK == statusCode);
+		JSONObject result = SendingUtils.send(hl7Message, url, oscarKeyBase64, serviceKeyBase64, serviceName);
+		logger.debug("statusCode: " + result.getString("statusCode"));
+		return result;
 	}
 
-	private static boolean sendHealthCardInfo(HealthCardMagneticParser parser) throws HL7Exception, InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException
+	private static JSONObject sendHealthCardInfo(HealthCardMagneticParser parser) throws HL7Exception, InvalidKeyException, SignatureException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException, IOException, InvalidKeySpecException
 	{
 		DateHolder healthCardEffectiveDate = new DateHolder();
 		healthCardEffectiveDate.year = parser.getCardIssueYear();
@@ -108,8 +130,42 @@ public class CardReaderAction
 		ADT_A09 hl7Message = AdtA10.makeAdtA10(SENDER, PATIENT_TYPE, ROOM, parser.getHealthNumber(), parser.getCardVersion(), parser.getProvince(), healthCardEffectiveDate, healthCardExpiryDate, parser.getLastName(), parser.getFirstName(), birthDate,
 				parser.getGender());
 		logger.debug("msg " + hl7Message + " url " + url + " oscarkey " + oscarKeyBase64 + " serv " + serviceKeyBase64 + " servNAme " + serviceName);
-		int statusCode = SendingUtils.send(hl7Message, url, oscarKeyBase64, serviceKeyBase64, serviceName);
-		logger.debug("statusCode" + statusCode);
-		return(HttpServletResponse.SC_OK == statusCode);
+		JSONObject result = SendingUtils.send(hl7Message, url, oscarKeyBase64, serviceKeyBase64, serviceName);
+		logger.debug("statusCode: " + result.getString("statusCode"));
+		return result;
+	}
+	
+	public static boolean savePatientInfo(HttpServletRequest request) 
+	{
+		if (request == null) 
+		{
+			return false;
+		}
+		
+		try 
+		{
+			ADT_A09 hl7Message = AdtA10.makeAdtA08(SENDER, PATIENT_TYPE, ROOM, request);
+			logger.debug("msg " + hl7Message + " url " + url + " oscarkey " + oscarKeyBase64 + " serv " + serviceKeyBase64 + " servNAme " + serviceName);
+			JSONObject result = SendingUtils.send(hl7Message, url, oscarKeyBase64, serviceKeyBase64, serviceName);
+			int statusCode = result.getInt("statusCode");
+			logger.debug("statusCode: " + statusCode);
+			
+			if (statusCode != 200)
+			{
+				return false;
+			}
+			JSONObject body = result.getJSONObject("body");
+			if (body.getInt("flag") != 200) 
+			{
+				return false;
+			}
+		} 
+		catch (Exception e) 
+		{
+			MiscUtils.getLogger().info(e.toString());
+			return false;
+		}
+		
+		return true;
 	}
 }

@@ -1,11 +1,18 @@
 package org.oscarehr.oscar_apps.util;
 
+import java.text.ParseException;
 import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
 
 import ca.uhn.hl7v2.HL7Exception;
 import ca.uhn.hl7v2.model.DataTypeException;
+import ca.uhn.hl7v2.model.v26.datatype.SAD;
+import ca.uhn.hl7v2.model.v26.datatype.XAD;
+import ca.uhn.hl7v2.model.v26.datatype.XTN;
 import ca.uhn.hl7v2.model.v26.message.ADT_A09;
 import ca.uhn.hl7v2.model.v26.segment.EVN;
+import ca.uhn.hl7v2.model.v26.segment.PID;
 import ca.uhn.hl7v2.model.v26.segment.PV1;
 
 public final class AdtA10
@@ -56,6 +63,81 @@ public final class AdtA10
 		return(adtA09);
 	}
 
+	public static ADT_A09 makeAdtA08(String senderName, char patientClass, String room, HttpServletRequest request) throws HL7Exception, ParseException
+	{
+		ADT_A09 adtA09=new ADT_A09();
+		
+		DataTypeUtils.fillMsh(adtA09.getMSH(), new Date(), senderName, "ADT", "A08", "ADT_A09", DataTypeUtils.HL7_VERSION_ID);
+		DataTypeUtils.fillSft(adtA09.getSFT(), "oscar_apps", MiscUtils.getBuildDateTime());
+
+		fillEvn(adtA09.getEVN());
+		
+		
+		DataTypeUtils.fillPidForA08(adtA09.getPID(), request);
+		fillAddrAndPhone(adtA09.getPID(), request.getParameter("street"), request.getParameter("city")
+				, request.getParameter("province"), request.getParameter("postal")
+				, request.getParameter("phone"), request.getParameter("cell"));
+		fillPv1(adtA09.getPV1(), patientClass, room);
+		
+		return(adtA09);
+	}
+	
+	private static void fillAddrAndPhone(PID pid, String street, String city
+			, String province, String postal, String phone, String cell) 
+	{
+		if (pid == null) 
+		{
+			return;
+		}
+		try 
+		{
+			XAD xad = pid.getPid11_PatientAddress(0);
+			if (xad != null) 
+			{
+				SAD sad = xad.getXad1_StreetAddress();
+				if (sad != null && sad.getSad1_StreetOrMailingAddress() != null) 
+				{
+					sad.getSad1_StreetOrMailingAddress().setValue(street);
+				}
+				
+				if (xad.getXad3_City() != null) 
+				{
+					xad.getXad3_City().setValue(city);
+				}
+				
+				if (xad.getXad4_StateOrProvince() != null) 
+				{
+					xad.getXad4_StateOrProvince().setValue(province);
+				}
+				
+				if (xad.getXad5_ZipOrPostalCode() != null) 
+				{
+					xad.getXad5_ZipOrPostalCode().setValue(postal);
+				}
+			}
+			XTN xtn = pid.getPid13_PhoneNumberHome(0);
+			if (xtn != null) 
+			{
+				if (xtn.getXtn1_TelephoneNumber() != null) 
+				{
+					xtn.getXtn1_TelephoneNumber().setValue(phone);
+				}
+			}
+			xtn = pid.getPid14_PhoneNumberBusiness(0);
+			if (xtn != null)
+			{
+				if (xtn.getXtn1_TelephoneNumber() != null) 
+				{
+					xtn.getXtn1_TelephoneNumber().setValue(cell);
+				}
+			}
+		} 
+		catch (Exception e) 
+		{
+			MiscUtils.getLogger().info(e.toString());
+		}
+	}
+	
 	private static void fillPv1(PV1 pv1, char patientClass, String room) throws DataTypeException
 	{
 		//Value Description
