@@ -26,7 +26,7 @@ dt,dd{padding:1px 0px; }
 	<form action="update_patient_action.jsp" onsubmit="return check();" name="updatePt" id="updatePt" method="post">
 		<div class="widget-box" style="padding-top:1%; width:1000px; margin-left: auto; margin-right: auto;">
 			<div class="widget-header widget-header-flat">
-				<h4 class="smaller"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
+				<h4 class="smaller" style="line-height: 28px;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
 			</div>
 		
 			<div class="widget-body">
