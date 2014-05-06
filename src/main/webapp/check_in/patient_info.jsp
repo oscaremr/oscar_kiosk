@@ -1,5 +1,6 @@
 <%@ page language="java"%>
 <%@ page import="net.sf.json.*" %>
+<%@page import="org.oscarehr.oscar_apps.util.LocaleUtils"%>
 <!DOCTYPE html>
 <%
 JSONObject ret = (JSONObject)request.getAttribute("body");
@@ -25,7 +26,7 @@ dt,dd{padding:1px 0px; }
 	<form action="update_patient_action.jsp" onsubmit="return check();" name="updatePt" id="updatePt" method="post">
 		<div class="widget-box" style="padding-top:1%; width:1000px; margin-left: auto; margin-right: auto;">
 			<div class="widget-header widget-header-flat">
-				<h4 class="smaller">Demographic Information -- <%if(ptInfo.getString("first_name")!=null){out.print(ptInfo.getString("first_name"));} %>, <%if(ptInfo.getString("last_name")!=null){out.print(ptInfo.getString("last_name"));} %></h4>
+				<h4 class="smaller"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
 			</div>
 		
 			<div class="widget-body">
@@ -46,37 +47,30 @@ dt,dd{padding:1px 0px; }
 					<input type="hidden" name="expiryMonth" value="<%if(ptInfo.getString("expiryMonth")!=null){out.print(ptInfo.getString("expiryMonth"));}%>">
 
 					<dl id="ptInfo" class="dl-horizontal">
-						<dt class="topBotPadding">Appointment Time:</dt>
+						<dt class="topBotPadding">Appointment:</dt>
 						<%if (ptInfo.getString("aptTime") != null) {%>
 						<dd class="topBotPadding"><%=ptInfo.getString("aptTime")%></dd>
 						<%} else { %>
 						<dd class="topBotPadding"></dd>
 						<%} %>
 						
-						<dt class="topBotPadding">Demographic No:</dt>
-						<%if (ptInfo.getString("demoNo") != null) { %>
-						<dd class="topBotPadding"><%=ptInfo.getString("demoNo")%></dd>
-						<%} else { %>
-						<dd class="topBotPadding"></dd>
-						<%} %>
-						
 						<dt class="topBotPadding">Name:</dt>
-						<dd class="topBotPadding"><%if (ptInfo.getString("last_name") != null) {out.print(ptInfo.getString("last_name"));}%>, <% if (ptInfo.getString("first_name") != null) {out.print(ptInfo.getString("first_name"));} %></dd>
+						<dd class="topBotPadding"><%if (ptInfo.getString("first_name") != null) {out.print(ptInfo.getString("first_name"));}%>, <% if (ptInfo.getString("last_name") != null) {out.print(ptInfo.getString("last_name"));} %></dd>
 						
-						<dt class="topBotPadding">Heath Card No:</dt>
-						<dd class="topBotPadding"><%if(ptInfo.getString("hin")!=null){out.print(ptInfo.getString("hin"));}%></dd>
-						
-						<dt class="topBotPadding">VER</dt>
-						<dd class="topBotPadding"><%if (ptInfo.getString("ver")!=null){out.print(ptInfo.getString("ver"));} %></dd>
-						
-						<dt class="topBotPadding">HC Type</dt>
-						<dd class="topBotPadding"><%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("hcType"));} %></dd>
+						<dt class="topBotPadding">Gender:</dt>
+						<dd class="topBotPadding"><%if(ptInfo.getString("sex")!=null){out.print(ptInfo.getString("sex"));}%></dd>
 						
 						<dt class="topBotPadding">Date of Birth:</dt>
 						<dd class="topBotPadding"><%if(ptInfo.getString("dob")!=null){out.print(ptInfo.getString("dob"));}%></dd>
 						
-						<dt class="topBotPadding">Gender:</dt>
-						<dd class="topBotPadding"><%if(ptInfo.getString("sex")!=null){out.print(ptInfo.getString("sex"));}%></dd>
+						<dt class="topBotPadding">Health Card #:</dt>
+						<dd class="topBotPadding"><%if(ptInfo.getString("hin")!=null){out.print(ptInfo.getString("hin"));}%></dd>
+						
+						<dt class="topBotPadding">HC VER</dt>
+						<dd class="topBotPadding"><%if (ptInfo.getString("ver")!=null){out.print(ptInfo.getString("ver"));} %></dd>
+						
+						<dt class="topBotPadding">HC Type</dt>
+						<dd class="topBotPadding"><%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("hcType"));} %></dd>
 						
 						<dt class="dtPadding">Street:</dt>
 						<dd><input type="text" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>" size="60"/></dd>
@@ -164,10 +158,10 @@ dt,dd{padding:1px 0px; }
 						<dt class="dtPadding">Postal Code:</dt>
 						<dd><input type="text" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
 						
-						<dt class="dtPadding">Phone:</dt>
+						<dt class="dtPadding">Home Phone:</dt>
 						<dd><input type="text" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
 						
-						<dt class="dtPadding">Cell:</dt>
+						<dt class="dtPadding">Cell Phone:</dt>
 						<dd><input type="text" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
 						<br/><br/>
 						<dt><dt>
