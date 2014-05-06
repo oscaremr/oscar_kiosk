@@ -49,10 +49,48 @@ public final class ConfigUtils
 		Properties p=new Properties();
 		readFromFile(defaultPropertiesUrl, p);
 		
-		if (propertiesUrl!=null)
+		if (propertiesUrl != null)
 		{
 			p=new Properties(p);
 			readFromFile(propertiesUrl, p);
+		}
+		else
+		{
+			String contextPath = "";
+			String propFileName = "";
+
+			try 
+			{
+				String url = ConfigUtils.class.getResource("/").getPath();
+				logger.info(url);
+				int idx = url.lastIndexOf("/WEB-INF");
+				url = url.substring(0, idx);
+
+				idx = url.lastIndexOf('/');
+				contextPath = url.substring(idx + 1);
+			} 
+			catch (Exception e) 
+			{
+				logger.error("Error", e);
+			}
+
+			String propName = contextPath + ".properties";
+
+			char sep = System.getProperty("file.separator").toCharArray()[0];
+			propFileName = System.getProperty("user.home") + sep + propName;
+			logger.info("looking up " + propFileName);
+			// oscar.OscarProperties p = oscar.OscarProperties.getInstance();
+			try 
+			{
+				// This has been used to look in the users home directory that
+				// started tomcat
+				readFromFile(propFileName, p);
+				logger.info("loading properties from " + propFileName);
+			} 
+			catch (java.io.FileNotFoundException ex) 
+			{
+				logger.info(propFileName + " not found");
+			}
 		}
 
 		return(p);

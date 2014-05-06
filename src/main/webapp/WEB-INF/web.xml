@@ -19,4 +19,8 @@
 	<listener>
 		<listener-class>org.oscarehr.oscar_apps.util.ContextStartupListener</listener-class>
 	</listener>
+	
+	<welcome-file-list>
+		<welcome-file>check_in/card_reader.jsp</welcome-file>
+	</welcome-file-list>
 </web-app>

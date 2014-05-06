@@ -1,7 +1,7 @@
 <!-- Note that this is not a self standing ant build file. This file is only meant to be called from maven. -->
 <project default="copy_jsps">
 	<property name="webapps.dir" value="catalina_base/webapps" />
-	<property name="context.dir" value="${webapps.dir}/oscar_apps" />
+	<property name="context.dir" value="${webapps.dir}/oscar_kiosk" />
 
 	<target name="copy_jsps">
 		<echo message="Copying jsps" />
@@ -13,7 +13,7 @@
 
 	<target name="build_catalina_base">
 		<copy todir="${context.dir}">
-			<fileset dir="target/oscar_apps-0.0-SNAPSHOT" />
+			<fileset dir="target/oscar_kiosk" />
 		</copy>
 	</target>
 
