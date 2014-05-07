@@ -55,7 +55,7 @@ dt,dd{padding:1px 0px; }
 						<%} %>
 						
 						<dt class="topBotPadding">Name:</dt>
-						<dd class="topBotPadding"><%if (ptInfo.getString("first_name") != null) {out.print(ptInfo.getString("first_name"));}%>, <% if (ptInfo.getString("last_name") != null) {out.print(ptInfo.getString("last_name"));} %></dd>
+						<dd class="topBotPadding"><%if (ptInfo.getString("first_name") != null) {out.print(ptInfo.getString("first_name"));}%>&nbsp;<% if (ptInfo.getString("last_name") != null) {out.print(ptInfo.getString("last_name"));} %></dd>
 						
 						<dt class="topBotPadding">Gender:</dt>
 						<dd class="topBotPadding"><%if(ptInfo.getString("sex")!=null){out.print(ptInfo.getString("sex"));}%></dd>
