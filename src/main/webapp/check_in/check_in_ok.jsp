@@ -11,16 +11,22 @@
 	%>
 
 	<%if (flag == 404) { %>
-	<div style="color:blue;text-align:center;font-weight:bold">
+	<div style="color:green;text-align:center;font-weight:bold">
+	<font size="12pix">
 	<%=LocaleUtils.getMessage(request, "CHECK_IN.NEW_PATIENT_CHECK_IN")%>
+	</font>
 	</div>
 	<%} else if (flag == 201){ %>
-	<div style="color:#6495ED;text-align:center;font-weight:bold">
+	<div style="color:green;text-align:center;font-weight:bold">
+	<font size="12pix">
 	<%=LocaleUtils.getMessage(request, "CHECK_IN.CHECK_IN_NO_APPOINTMENT")%>
+	</font>
 	</div>
 	<%} else {%>
-	<div style="color:#009900;text-align:center;font-weight:bold">
+	<div style="color:green;text-align:center;font-weight:bold">
+	<font size="12pix">
 	<%=LocaleUtils.getMessage(request, "CHECK_IN.CHECK_IN_OK")%>
+	</font>
 	</div>
 	<%} %>
 

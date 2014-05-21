@@ -9,7 +9,8 @@
 	} catch (Exception e) {}
 	
 	%>
-	<div style="color:#990000;text-align:center;font-weight:bold">
+	<div style="color:green;text-align:center;font-weight:bold">
+		<font size="12pix">
 		<%
 		if (reason == 500) { 
 			out.print(LocaleUtils.getMessage(request, "CHECK_IN.CHECK_IN_FAIL"));
@@ -17,6 +18,7 @@
 			out.print(LocaleUtils.getMessage(request, "CHECK_IN.INVALID_CARD"));
 		}
 		%>
+		</font>
 	</div>
 	
 	
