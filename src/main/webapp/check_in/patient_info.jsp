@@ -25,8 +25,8 @@ dt,dd{padding:1px 0px; }
 <body onload="selPorvice('<%if(ptInfo.getString("province")!=null){out.print(ptInfo.getString("province"));}%>')" style="font-size:14px;">
 	<form action="update_patient_action.jsp" onsubmit="return check();" name="updatePt" id="updatePt" method="post">
 		<div class="widget-box" style="padding-top:1%; width:1000px; margin-left: auto; margin-right: auto;">
-			<div class="widget-header widget-header-flat">
-				<h4 class="smaller" style="line-height: 28px;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
+			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px;">
+				<h4 class="smaller" style="font-size:40px; line-height:45px; color:green;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
 			</div>
 		
 			<div class="widget-body">
