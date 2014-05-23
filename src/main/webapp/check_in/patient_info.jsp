@@ -23,6 +23,7 @@ dt,dd{padding:1px 0px; }
 body{font-size:28px;}
 dl.dl-horizontal dt{width:232px;}
 dl.dl-horizontal dd{margin-left:252px;}
+input[type="text"]{font-size:28px;}
 </style>
 </head>
 <body onload="selPorvice('<%if(ptInfo.getString("province")!=null){out.print(ptInfo.getString("province"));}%>')">
@@ -76,10 +77,10 @@ dl.dl-horizontal dd{margin-left:252px;}
 						<dd class="topBotPadding"><%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("hcType"));} %></dd>
 						
 						<dt class="dtPadding">Street:</dt>
-						<dd><input style="font-size:28px;" type="text" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>" size="60"/></dd>
+						<dd><input type="text" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>" size="60"/></dd>
 						
 						<dt class="dtPadding">City:</dt>
-						<dd><input style="font-size:28px;" type="text" name="city" value="<%if(ptInfo.getString("city")!=null){out.print(ptInfo.getString("city"));}%>" /></dd>
+						<dd><input type="text" name="city" value="<%if(ptInfo.getString("city")!=null){out.print(ptInfo.getString("city"));}%>" /></dd>
 						
 						<dt class="dtPadding">Province:</dt>
 						<dd>
@@ -159,13 +160,13 @@ dl.dl-horizontal dd{margin-left:252px;}
 						</dd>
 						
 						<dt class="dtPadding">Postal Code:</dt>
-						<dd><input style="font-size:28px;" type="text" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
+						<dd><input type="text" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
 						
 						<dt class="dtPadding">Home Phone:</dt>
-						<dd><input style="font-size:28px;" type="text" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
+						<dd><input type="text" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
 						
 						<dt class="dtPadding">Cell Phone:</dt>
-						<dd><input style="font-size:28px;" type="text" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
+						<dd><input type="text" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
 						<br/><br/>
 						<dt><dt>
 						<dd>
