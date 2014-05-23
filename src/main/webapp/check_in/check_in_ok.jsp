@@ -9,27 +9,22 @@
 	} catch (Exception e) {	}
 	
 	%>
-
+	<div class="centerMiddle" style="color:green;text-align:center;font-weight:bold">
 	<%if (flag == 404) { %>
-	<div style="color:green;text-align:center;font-weight:bold">
+	
 	<font size="12pix">
 	<%=LocaleUtils.getMessage(request, "CHECK_IN.NEW_PATIENT_CHECK_IN")%>
 	</font>
-	</div>
 	<%} else if (flag == 201){ %>
-	<div style="color:green;text-align:center;font-weight:bold">
 	<font size="12pix">
 	<%=LocaleUtils.getMessage(request, "CHECK_IN.CHECK_IN_NO_APPOINTMENT")%>
 	</font>
-	</div>
 	<%} else {%>
-	<div style="color:green;text-align:center;font-weight:bold">
 	<font size="12pix">
 	<%=LocaleUtils.getMessage(request, "CHECK_IN.CHECK_IN_OK")%>
 	</font>
-	</div>
 	<%} %>
-
+	</div>
 	
 	<script type="text/JavaScript">
 		setTimeout("location.href = 'card_reader.jsp';", 10000);

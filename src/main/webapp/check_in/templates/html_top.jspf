@@ -5,5 +5,15 @@
 <html>
 	<head>
 		<title><%=LocaleUtils.getMessage(request, "CHECK_IN.PATIENT_CHECK_IN")%></title>
+		<style type="text/css">
+			div.centerMiddle{
+				position:absolute;
+				top:50%;
+				left:50%;
+				margin:-200px 0 0 -400px;
+				width:800px;
+				height:400px;
+			}
+		</style>
 	</head>
 	<body>

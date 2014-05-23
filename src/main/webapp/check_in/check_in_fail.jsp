@@ -9,7 +9,7 @@
 	} catch (Exception e) {}
 	
 	%>
-	<div style="color:green;text-align:center;font-weight:bold">
+	<div class="centerMiddle" style="color:green;text-align:center;font-weight:bold">
 		<font size="12pix">
 		<%
 		if (reason == 500) { 
