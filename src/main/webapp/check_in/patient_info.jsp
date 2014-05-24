@@ -20,21 +20,22 @@ String ctx = request.getContextPath();
 <style type="text/css">
 dt,dd{padding:1px 0px; }
 .dtPadding{padding: 5px 4px;}
-body{font-size:28px;}
-dl.dl-horizontal dt{width:232px;}
-dl.dl-horizontal dd{margin-left:252px;}
-input[type="text"]{font-size:28px;}
+body{font-size:28px;background-color:green;}
+dl.dl-horizontal dt{width:400px;}
+dl.dl-horizontal dd{margin-left:420px}
+input[type="text"]{font-size:28px;font-weight:bold;}
+.widget-main input[type="text"],select,option,select:focus{color:white;background-color:green}
 </style>
 </head>
 <body onload="selPorvice('<%if(ptInfo.getString("province")!=null){out.print(ptInfo.getString("province"));}%>')">
 	<form action="update_patient_action.jsp" onsubmit="return check();" name="updatePt" id="updatePt" method="post">
-		<div class="widget-box" style="padding-top:1%; width:95%; margin-left: auto; margin-right: auto;">
-			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px;">
-				<h4 class="smaller" style="font-size:40px; line-height:45px; color:green;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
+		<div class="widget-box" style="width:100%">
+			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px; color:white; background-color:green;">
+				<h4 class="smaller" style="font-size:40px; line-height:45px;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
 			</div>
 		
 			<div class="widget-body">
-				<div class="widget-main" >
+				<div class="widget-main" style="background-color:green;color:white;">
 					<input type="hidden" name="demoNo" value="<%if(ptInfo.getString("demoNo")!=null){out.print(ptInfo.getString("demoNo"));}%>">
 					<input type="hidden" name="first_name" value="<%if(ptInfo.getString("first_name")!=null){out.print(ptInfo.getString("first_name"));}%>">
 					<input type="hidden" name="last_name" value="<%if(ptInfo.getString("last_name")!=null){out.print(ptInfo.getString("last_name"));}%>">
@@ -77,10 +78,10 @@ input[type="text"]{font-size:28px;}
 						<dd class="topBotPadding"><%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("hcType"));} %></dd>
 						
 						<dt class="dtPadding">Street:</dt>
-						<dd><input type="text" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>" size="60"/></dd>
+						<dd><input type="text" size="60" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>" size="60"/></dd>
 						
 						<dt class="dtPadding">City:</dt>
-						<dd><input type="text" name="city" value="<%if(ptInfo.getString("city")!=null){out.print(ptInfo.getString("city"));}%>" /></dd>
+						<dd><input type="text" size="50" name="city" value="<%if(ptInfo.getString("city")!=null){out.print(ptInfo.getString("city"));}%>" /></dd>
 						
 						<dt class="dtPadding">Province:</dt>
 						<dd>
@@ -160,20 +161,20 @@ input[type="text"]{font-size:28px;}
 						</dd>
 						
 						<dt class="dtPadding">Postal Code:</dt>
-						<dd><input type="text" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
+						<dd><input type="text" size="9" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
 						
 						<dt class="dtPadding">Home Phone:</dt>
-						<dd><input type="text" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
+						<dd><input type="text" size="20" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
 						
 						<dt class="dtPadding">Cell Phone:</dt>
 						<dd><input type="text" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
-						<br/><br/>
-						<dt><dt>
-						<dd>
-						<input type="submit" class="btn btn-sm btn-primary" name="save" value="save" style="margin-right:20px;"/> 
-						<input type="button" class="btn btn-sm btn-primary" value="back" onclick="backCardReader();" />
-						</dd>
+						
 					</dl>
+					<br>
+					<div style="text-align:center">
+						<input type="submit" class="btn btn-lg btn-primary" name="save" value="CONFIRM"/>
+					</div>
+					<br>
 				</div>
 			</div>
 		</div>

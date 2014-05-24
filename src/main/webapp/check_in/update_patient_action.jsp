@@ -6,12 +6,12 @@
 	if (ret) {
 %>
 <script type="text/javascript">
-alert("Update demographic inforamtion successfully!");
+//alert("Update demographic inforamtion successfully!");
 location.href="card_reader.jsp";
 </script>
 <%} else {%>
 <script type="text/javascript">
-alert("Failed to update demographic information!");
+//alert("Failed to update demographic information!");
 location.href="check_in_fail.jsp";
 </script>
 <%}%>
