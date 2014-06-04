@@ -23,7 +23,7 @@
 	
 	
 	<script type="text/JavaScript">
-		setTimeout("location.href = 'card_reader.jsp';", 10000);
+		setTimeout("location.href = 'card_reader.jsp';", 3000);
 	</script>
 	
 
