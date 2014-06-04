@@ -76,14 +76,14 @@ public final class AdtA10
 		DataTypeUtils.fillPidForA08(adtA09.getPID(), request);
 		fillAddrAndPhone(adtA09.getPID(), request.getParameter("street"), request.getParameter("city")
 				, request.getParameter("province"), request.getParameter("postal")
-				, request.getParameter("phone"), request.getParameter("cell"));
+				, request.getParameter("phone"), request.getParameter("cell"), request.getParameter("email"));
 		fillPv1(adtA09.getPV1(), patientClass, room);
 		
 		return(adtA09);
 	}
 	
 	private static void fillAddrAndPhone(PID pid, String street, String city
-			, String province, String postal, String phone, String cell) 
+			, String province, String postal, String phone, String cell, String email) 
 	{
 		if (pid == null) 
 		{
@@ -122,6 +122,11 @@ public final class AdtA10
 				{
 					xtn.getXtn1_TelephoneNumber().setValue(phone);
 				}
+				if (xtn.getXtn4_CommunicationAddress() != null)
+				{
+					xtn.getXtn4_CommunicationAddress().setValue(email);
+				}
+				
 			}
 			xtn = pid.getPid14_PhoneNumberBusiness(0);
 			if (xtn != null)

@@ -1,12 +1,18 @@
 <%@ page language="java"%>
 <%@ page import="net.sf.json.*" %>
 <%@page import="org.oscarehr.oscar_apps.util.LocaleUtils"%>
+<%@page import="org.oscarehr.oscar_apps.util.ConfigUtils"%>
+
 <!DOCTYPE html>
 <%
 JSONObject ret = (JSONObject)request.getAttribute("body");
 JSONObject ptInfo = (JSONObject)ret.get("patientInfo");
-
 String ctx = request.getContextPath();
+
+String bkClr = ConfigUtils.getProperty("patient_info_page_bk_color");
+if (bkClr == null || bkClr.isEmpty()) {
+	bkClr = "#CCFFCC";
+}
 %>
 
 <html>
@@ -20,28 +26,28 @@ String ctx = request.getContextPath();
 <style type="text/css">
 dt,dd{padding:1px 0px; }
 .dtPadding{padding: 5px 4px;}
-body{font-size:28px;background-color:green;}
+body{font-size:28px;background-color:<%=bkClr%>;}
 dl.dl-horizontal dt{width:400px;}
 dl.dl-horizontal dd{margin-left:420px}
 input[type="text"]{font-size:28px;font-weight:bold;}
-.widget-main input[type="text"],select,option,select:focus{color:white;background-color:green}
+.widget-main input[type="text"],select,option,select:focus{color:white;background-color:<%=bkClr%>}
 </style>
 </head>
 <body onload="selPorvice('<%if(ptInfo.getString("province")!=null){out.print(ptInfo.getString("province"));}%>')">
 	<form action="update_patient_action.jsp" onsubmit="return check();" name="updatePt" id="updatePt" method="post">
 		<div class="widget-box" style="width:100%">
-			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px; color:white; background-color:green;">
+			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px; color:white; background-color:<%=bkClr%>;">
 				<h4 class="smaller" style="font-size:40px; line-height:45px;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
 			</div>
 		
 			<div class="widget-body">
-				<div class="widget-main" style="background-color:green;color:white;">
+				<div class="widget-main" style="background-color:<%=bkClr%>;color:white;">
 					<input type="hidden" name="demoNo" value="<%if(ptInfo.getString("demoNo")!=null){out.print(ptInfo.getString("demoNo"));}%>">
 					<input type="hidden" name="first_name" value="<%if(ptInfo.getString("first_name")!=null){out.print(ptInfo.getString("first_name"));}%>">
 					<input type="hidden" name="last_name" value="<%if(ptInfo.getString("last_name")!=null){out.print(ptInfo.getString("last_name"));}%>">
 					<input type="hidden" name="hin" value="<%if(ptInfo.getString("hin")!=null){out.print(ptInfo.getString("hin"));}%>">
 					<input type="hidden" name="ver" value="<%if(ptInfo.getString("ver")!=null){out.print(ptInfo.getString("ver"));}%>">
-					<input type="hidden" name="hcType" value="<%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("ver"));}%>">
+					<input type="hidden" name="hcType" value="<%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("hcType"));}%>">
 					<input type="hidden" name="dob" value="<%if(ptInfo.getString("dob")!=null){out.print(ptInfo.getString("dob"));}%>">
 					<input type="hidden" name="sex" value="<%if(ptInfo.getString("sex")!=null){out.print(ptInfo.getString("sex"));}%>">
 					
@@ -168,6 +174,9 @@ input[type="text"]{font-size:28px;font-weight:bold;}
 						
 						<dt class="dtPadding">Cell Phone:</dt>
 						<dd><input type="text" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
+						
+						<dt class="dtPadding">Email:</dt>
+						<dd><input type="text" name="email" value="<%if(ptInfo.getString("email")!=null){out.print(ptInfo.getString("email"));}%>"></dd>
 						
 					</dl>
 					<br>

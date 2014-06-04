@@ -273,8 +273,8 @@ public final class DataTypeUtils
 		cx.getIdentifierTypeCode().setValue(HEALTH_NUMBER);
 		// blank for everyone but ontario use version code
 		if (request.getParameter("ver") != null) cx.getIdentifierCheckDigit().setValue(request.getParameter("ver"));
-		// province
-		cx.getAssigningJurisdiction().getIdentifier().setValue(request.getParameter("province"));
+		// hcType
+		cx.getAssigningJurisdiction().getIdentifier().setValue(request.getParameter("hcType"));
 
 		setDate(cx.getEffectiveDate(), Integer.parseInt(request.getParameter("effYear"))
 				, Integer.parseInt(request.getParameter("effMonth")), Integer.parseInt(request.getParameter("effDay")));
@@ -302,7 +302,7 @@ public final class DataTypeUtils
 		
 		Date dob = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dob"));
 
-		setDate(pid.getDateTimeOfBirth() , dob.getYear() + 1900, dob.getMonth() - 1, dob.getDate());
+		setDate(pid.getDateTimeOfBirth() , dob.getYear() + 1900, dob.getMonth() + 1, dob.getDate());
 
 		// Value Description
 		// -----------------
