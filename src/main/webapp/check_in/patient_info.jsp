@@ -11,7 +11,7 @@ String ctx = request.getContextPath();
 
 String bkClr = ConfigUtils.getProperty("patient_info_page_bk_color");
 if (bkClr == null || bkClr.isEmpty()) {
-	bkClr = "#CCFFCC";
+	bkClr = "#DCF2E0";
 }
 %>
 
@@ -30,18 +30,18 @@ body{font-size:28px;background-color:<%=bkClr%>;}
 dl.dl-horizontal dt{width:400px;}
 dl.dl-horizontal dd{margin-left:420px}
 input[type="text"]{font-size:28px;font-weight:bold;}
-.widget-main input[type="text"],select,option,select:focus{color:white;background-color:<%=bkClr%>}
+.widget-main input[type="text"],select,option,select:focus{color:black;background-color:<%=bkClr%>}
 </style>
 </head>
 <body onload="selPorvice('<%if(ptInfo.getString("province")!=null){out.print(ptInfo.getString("province"));}%>')">
 	<form action="update_patient_action.jsp" onsubmit="return check();" name="updatePt" id="updatePt" method="post">
 		<div class="widget-box" style="width:100%">
-			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px; color:white; background-color:<%=bkClr%>;">
+			<div class="widget-header widget-header-flat" style="padding-top: 5px; padding-bottom: 10px; color:green; background-color:<%=bkClr%>;">
 				<h4 class="smaller" style="font-size:40px; line-height:45px;"><%=LocaleUtils.getMessage(request, "CHECK_IN.VERIFY_INFO")%></h4>
 			</div>
 		
 			<div class="widget-body">
-				<div class="widget-main" style="background-color:<%=bkClr%>;color:white;">
+				<div class="widget-main" style="background-color:<%=bkClr%>;color:black;">
 					<input type="hidden" name="demoNo" value="<%if(ptInfo.getString("demoNo")!=null){out.print(ptInfo.getString("demoNo"));}%>">
 					<input type="hidden" name="first_name" value="<%if(ptInfo.getString("first_name")!=null){out.print(ptInfo.getString("first_name"));}%>">
 					<input type="hidden" name="last_name" value="<%if(ptInfo.getString("last_name")!=null){out.print(ptInfo.getString("last_name"));}%>">
@@ -84,10 +84,10 @@ input[type="text"]{font-size:28px;font-weight:bold;}
 						<dd class="topBotPadding"><%if(ptInfo.getString("hcType")!=null){out.print(ptInfo.getString("hcType"));} %></dd>
 						
 						<dt class="dtPadding">Street:</dt>
-						<dd><input type="text" size="60" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>" size="60"/></dd>
+						<dd><input type="text" size="50" maxlength="60" name="street" value="<%if(ptInfo.getString("street")!=null){out.print(ptInfo.getString("street"));}%>"/></dd>
 						
 						<dt class="dtPadding">City:</dt>
-						<dd><input type="text" size="50" name="city" value="<%if(ptInfo.getString("city")!=null){out.print(ptInfo.getString("city"));}%>" /></dd>
+						<dd><input type="text" size="50" maxlength="50" name="city" value="<%if(ptInfo.getString("city")!=null){out.print(ptInfo.getString("city"));}%>" /></dd>
 						
 						<dt class="dtPadding">Province:</dt>
 						<dd>
@@ -167,16 +167,16 @@ input[type="text"]{font-size:28px;font-weight:bold;}
 						</dd>
 						
 						<dt class="dtPadding">Postal Code:</dt>
-						<dd><input type="text" size="9" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
+						<dd><input type="text" size="9" maxlength="9" name="postal" value="<%if(ptInfo.getString("postal")!=null){out.print(ptInfo.getString("postal"));}%>"></dd>
 						
 						<dt class="dtPadding">Home Phone:</dt>
-						<dd><input type="text" size="20" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
+						<dd><input type="text" size="20" maxlength="20" name="phone" value="<%if(ptInfo.getString("phone")!=null){out.print(ptInfo.getString("phone"));}%>" onblur="formatPhoneNum()"></dd>
 						
 						<dt class="dtPadding">Cell Phone:</dt>
-						<dd><input type="text" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
+						<dd><input type="text" size="20" maxlength="20" name="cell" value="<%if(ptInfo.getString("cell")!=null){out.print(ptInfo.getString("cell"));}%>" onblur="formatPhoneNum()"></dd>
 						
 						<dt class="dtPadding">Email:</dt>
-						<dd><input type="text" name="email" value="<%if(ptInfo.getString("email")!=null){out.print(ptInfo.getString("email"));}%>"></dd>
+						<dd><input type="text" size="50" maxlength="100" name="email" value="<%if(ptInfo.getString("email")!=null){out.print(ptInfo.getString("email"));}%>"></dd>
 						
 					</dl>
 					<br>
