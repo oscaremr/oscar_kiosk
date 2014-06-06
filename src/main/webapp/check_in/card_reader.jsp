@@ -50,7 +50,7 @@
 			var blurEl = this; 
 			setTimeout(function() {
 				blurEl.focus();
-			}, 10);
+			}, 3000);
 		}
 		
 		var chkEndTimer = null;
