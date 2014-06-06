@@ -42,7 +42,7 @@
 			var blurEl = this; 
 			setTimeout(function() {
 				blurEl.focus();
-			}, 10);
+			}, 3000);
 		};
 		cardDataField.focus();
 		
@@ -52,6 +52,10 @@
 				blurEl.focus();
 			}, 3000);
 		}
+		
+		setInterval(function(evt) {
+			var tmp = this;
+		})
 		
 		var chkEndTimer = null;
 		function keyupHdlr() {
