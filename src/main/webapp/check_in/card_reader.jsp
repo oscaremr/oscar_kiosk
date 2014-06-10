@@ -46,17 +46,6 @@
 		};
 		cardDataField.focus();
 		
-		window.onblur = function(evt) {
-			var blurEl = this; 
-			setTimeout(function() {
-				blurEl.focus();
-			}, 3000);
-		}
-		
-		setInterval(function(evt) {
-			var tmp = this;
-		})
-		
 		var chkEndTimer = null;
 		function keyupHdlr() {
 			if (chkEndTimer == null) {
