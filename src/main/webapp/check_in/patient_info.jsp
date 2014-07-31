@@ -11,7 +11,7 @@ String ctx = request.getContextPath();
 
 String bkClr = ConfigUtils.getProperty("patient_info_page_bk_color");
 if (bkClr == null || bkClr.isEmpty()) {
-	bkClr = "#DCF2E0";
+	bkClr = "#EFFBF5";
 }
 %>
 
